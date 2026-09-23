@@ -1,0 +1,41 @@
+services:
+  tstack1-base:
+    image: alpine:latest
+    container_name: tstack1-base
+    restart: always
+    environment:
+      - TSTACK_ENVVAR=${TSTACK_ENVVAR}
+    secrets:
+      - tstack-secret
+    volumes:
+      - tstack1-shared:/opt/share
+    command: >
+      sh -c "while true; do
+        SECRET_VAL=$$(cat /run/secrets/tstack-secret 2>/dev/null);
+        echo \"[tstack1-ext] Here | Secret: $${SECRET_VAL} Var: $${TSTACK_ENVVAR}\";
+        sleep 10;
+      done"
+
+  tstack1-ext:
+    image: alpine:latest
+    container_name: tstack1-ext
+    restart: always
+    environment:
+      - TSTACK_ENVVAR=${TSTACK_ENVVAR}
+    secrets:
+      - tstack-secret
+    volumes:
+      - tstack1-shared:/opt/share
+    command: >
+      sh -c "while true; do
+        SECRET_VAL=$$(cat /run/secrets/tstack-secret 2>/dev/null);
+        echo \"[tstack1-ext] Here | Secret: $${SECRET_VAL} Var: $${TSTACK_ENVVAR}\";
+        sleep 10;
+      done"
+
+volumes:
+  tstack1-shared:
+
+secrets:
+  tstack-secret:
+    environment: TSTACK_SECRET
