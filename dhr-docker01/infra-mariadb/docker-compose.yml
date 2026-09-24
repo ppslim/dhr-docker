@@ -1,0 +1,42 @@
+services:
+  infra-db-mariadb:
+    image: mariadb:lts
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb-root-password
+      MARIADB_AUTO_UPGRADE: '1'
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - infra-vol-ext-mariadb:/var/lib/mysql
+    networks:
+      infra-net-mariadb:
+        aliases:
+          - infra-db-mariadb
+    secrets:
+      - mariadb-root-password
+  infra-db-mariadb-sqlproxy:
+    image: alpine/socat:latest
+    ports:
+      - "3306"
+    networks:
+      - infra-net-mariadb
+    command: >
+      tcp-listen:3306,fork,reuseaddr 
+      tcp-connect:infra-db-mariadb:3306
+
+volumes:
+  infra-vol-ext-mariadb:
+    external: true
+
+networks:
+  infra-net-mariadb:
+    external: true
+
+secrets:
+  mariadb-root-password:
+    environment: MYSQL_ROOT_PASSWORD
