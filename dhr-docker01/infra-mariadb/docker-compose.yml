@@ -22,7 +22,7 @@ services:
   infra-db-mariadb-sqlproxy:
     image: alpine/socat:latest
     ports:
-      - "3306"
+      - "3306:3306"
     networks:
       - infra-net-mariadb
     command: >
