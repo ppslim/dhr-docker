@@ -25,6 +25,7 @@ services:
       - "3306:3306"
     networks:
       - infra-net-mariadb
+      - default
     command: >
       tcp-listen:3306,fork,reuseaddr 
       tcp-connect:infra-db-mariadb:3306
