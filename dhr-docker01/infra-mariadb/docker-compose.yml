@@ -12,7 +12,7 @@ services:
       timeout: 5s
       retries: 3
     volumes:
-      - infra-vol-ext-mariadb:/var/lib/mysql
+      - infra-vol-mariadb:/var/lib/mysql
     networks:
       infra-net-mariadb:
         aliases:
@@ -30,8 +30,7 @@ services:
       tcp-connect:infra-db-mariadb:3306
 
 volumes:
-  infra-vol-ext-mariadb:
-    external: true
+  infra-vol-mariadb:
 
 networks:
   infra-net-mariadb:
