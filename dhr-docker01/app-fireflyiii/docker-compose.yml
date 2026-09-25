@@ -33,6 +33,7 @@ services:
     environment:
       STATIC_CRON_TOKEN: ${STATIC_CRON_TOKEN}
     networks:
+      - infra-net-shared
       - default
     depends_on:
       - app-fireflyiii-frontend
