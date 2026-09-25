@@ -3,6 +3,7 @@ services:
     image: fireflyiii/core:version-6.7
     pull_policy: always
     restart: always
+    env_file: ./.env  ## Required to load things like MySQL Hostname / port
     environment:
       APP_KEY_FILE: /run/secrets/fireflyiii_app_key
       DB_PASSWORD_FILE: /run/secrets/fireflyiii_dbuser_password
@@ -42,6 +43,8 @@ networks:
   infra-net-mariadb:
     external: true
   infra-net-nginxproxy:
+    external: true
+  infra-net-shared:       # Required as container installs a package, so required net access
     external: true
   default:                # Required for inter container communication - Cron
     internal: true
