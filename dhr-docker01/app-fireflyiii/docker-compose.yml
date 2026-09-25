@@ -1,0 +1,54 @@
+services:
+  app-fireflyiii-frontend:
+    image: fireflyiii/core:version-6.7
+    pull_policy: always
+    restart: always
+    environment:
+      APP_KEY_FILE: /run/secrets/fireflyiii_app_key
+      DB_PASSWORD_FILE: /run/secrets/fireflyiii_dbuser_password
+      STATIC_CRON_TOKEN: ${STATIC_CRON_TOKEN}
+      AUTHENTICATION_GUARD: remote_user_guard
+      AUTHENTICATION_GUARD_HEADER: HTTP_X_APPAUTH_EMAIL
+      AUTHENTICATION_GUARD_EMAIL: HTTP_X_APPAUTH_EMAIL
+    secrets:
+      - fireflyiii_app_key
+      - fireflyiii_dbuser_password
+    volumes:
+      - app-vol-fireflyiii-shared:/var/www/html/storage/upload
+    networks:
+      infra-net-mariadb:
+      infra-net-nginxproxy:
+        aliases:
+          - app-fireflyiii-core
+      default:
+
+  app-fireflyiii-cron:
+    image: alpine
+    command:
+      - sh
+      - '-c'
+      - apk add tzdata && (ln -s /usr/share/zoneinfo/$$TZ /etc/localtime || true) && echo "0 3 * * * wget -qO- http://app-fireflyiii-frontend:8080/api/v1/cron/$$STATIC_CRON_TOKEN;echo" | crontab - && crond -f -L /dev/stdout
+    restart: always
+    environment:
+      STATIC_CRON_TOKEN: ${STATIC_CRON_TOKEN}
+    networks:
+      - default
+    depends_on:
+      - app-fireflyiii-frontend
+volumes:
+  app-vol-fireflyiii-shared:
+
+networks:
+  infra-net-mariadb:
+    external: true
+  infra-net-nginxproxy:
+    external: true
+  default:                # Required for inter container communication - Cron
+    internal: true
+
+secrets:
+  fireflyiii_app_key:
+    environment: APP_KEY
+  fireflyiii_dbuser_password:
+    environment: DB_PASSWORD
+
