@@ -34,7 +34,7 @@ services:
       default:
       infra-net-nginxproxy:
         aliases:
-          - app-ghostfolio-frontend
+          - app-ghostfolio-frontend-proxytarget
       infra-net-postgres:
       infra-net-shared:
 ############
