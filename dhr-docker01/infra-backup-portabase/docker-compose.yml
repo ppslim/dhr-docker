@@ -1,0 +1,36 @@
+name: infra-backup-portabase
+services:
+  infra-backup-portabase:
+    image: portabase/portabase:latest
+    restart: always
+    environment:
+      TZ: Europe/London
+      TELEMETRY: False
+      PROJECT_URL: https://portabase.int.richtech.uk
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public
+      PROJECT_SECRET: ${PROJECT_SECRET}
+    volumes:
+      - portabase-data:/data
+    healthcheck:
+        test: ["CMD-SHELL", "curl -f http://localhost/api/health"]
+        interval: 30s
+        timeout: 5s
+        retries: 3
+        start_period: 60s
+    networks:
+      infra-net-nginxproxy:
+      infra-net-postgres:
+      infra-net-portabase:
+        aliases:
+          - infra-backup-portabase
+
+volumes:
+  portabase-data:
+
+networks:
+  infra-net-nginxproxy:
+    external: true
+  infra-net-postgres:
+    external: true
+  infra-net-portabase:
+    external: true

@@ -1,0 +1,23 @@
+name: infra-backup-portabase-agent
+services:
+  infra-backup-portabase-agent-shared:
+    image: portabase/agent:latest
+    restart: always
+    environment:
+      TZ: Europe/London
+      EDGE_KEY: ${PORTABASE_AGENT_EDGEKEY_SHARED}
+    networks:
+      infra-net-postgres:
+      infra-net-mariadb:
+      infra-net-portabase:
+
+volumes:
+  portabase-data:
+
+networks:
+  infra-net-postgres:
+    external: true
+  infra-net-mariadb:
+    external: true
+  infra-net-portabase:
+    external: true
