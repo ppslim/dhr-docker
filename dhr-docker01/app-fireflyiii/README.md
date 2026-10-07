@@ -4,7 +4,7 @@ Deploys a `fireflyiii/core` instance
 
 ## `.env` required
 
-Yes
+Yes - Required to add Doppler secret pulling
 
 ## Secrets required
 
@@ -12,9 +12,6 @@ Yes
 `DB_PASSWORD`
 `STATIC_CRON_TOKEN`
 
-`MYSQL_ROOT_PASSWORD` Defined but not required
-
-
 ## Volumes required
 
-Shared volume is defined in compose
+Shared volume is defined in compose. **NOTE** Manually defined currently
