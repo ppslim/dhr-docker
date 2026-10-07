@@ -23,7 +23,7 @@ services:
           - app-fireflyiii-core
       default:
     labels:
-      - "dochand.order=-1"
+      - "dockhand.order=-1"
       - "dockhand.url=[Firefly III](https://firefly.int.richtech.uk)"
 #########
   app-fireflyiii-cron:
