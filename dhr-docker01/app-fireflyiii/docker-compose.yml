@@ -7,13 +7,14 @@ services:
     environment:
       APP_KEY_FILE: /run/secrets/fireflyiii_app_key
       DB_PASSWORD_FILE: /run/secrets/fireflyiii_dbuser_password
-      STATIC_CRON_TOKEN: ${STATIC_CRON_TOKEN}
+      STATIC_CRON_TOKEN_FILE: /run/secrets/fireflyiii_static_cron_token
       AUTHENTICATION_GUARD: remote_user_guard
       AUTHENTICATION_GUARD_HEADER: HTTP_X_APPAUTH_EMAIL
       AUTHENTICATION_GUARD_EMAIL: HTTP_X_APPAUTH_EMAIL
     secrets:
       - fireflyiii_app_key
       - fireflyiii_dbuser_password
+      - fireflyiii_static_cron_token
     volumes:
       - app-vol-fireflyiii-shared:/var/www/html/storage/upload
     networks:
@@ -36,12 +37,12 @@ services:
         # To use a local timezone, uncomment:
         # apk add tzdata
         # ln -s /usr/share/zoneinfo/$$TZ /etc/localtime || true
-        echo '0 3 * * * wget -qO- http://app-fireflyiii-frontend:8080/api/v1/cron/$$(cat /run/secrets/firefly_static_cron_token); echo' \
+        echo '0 3 * * * wget -qO- http://app-fireflyiii-frontend:8080/api/v1/cron/$$(cat /run/secrets/fireflyiii_static_cron_token); echo' \
           | crontab -
         crond -f -L /dev/stdout
     restart: always
     secrets:
-    - firefly_static_cron_token
+    - fireflyiii_static_cron_token
     networks:
       - infra-net-shared
       - default
@@ -66,6 +67,6 @@ secrets:
     environment: APP_KEY
   fireflyiii_dbuser_password:
     environment: DB_PASSWORD
-  firefly_static_cron_token:
+  fireflyiii_static_cron_token:
     environment: STATIC_CRON_TOKEN
 
