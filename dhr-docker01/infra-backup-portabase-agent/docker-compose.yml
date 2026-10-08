@@ -18,13 +18,13 @@ services:
       TZ: Europe/London
       EDGE_KEY: ${PORTABASE_AGENT_EDGEKEY_VOLUME}
     volumes:
-      - docker-sqllite-data:/sqllite-volumes/dockhand-sqllite-data
+      - dockhand-sqlite-data:/sqllite-volumes/dockhand-sqlite-data
     networks:
       infra-net-portabase:
 #######
 
 volumes:
-  dockhand-sqllite-data:
+  dockhand-sqlite-data:
     name: dockhand_dockhand_data
     external: true
 
