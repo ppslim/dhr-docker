@@ -10,9 +10,23 @@ services:
       infra-net-postgres:
       infra-net-mariadb:
       infra-net-portabase:
+#######
+  infra-backup-portabase-agent-volumes:
+    image: portabase/agent:latest
+    restart: always
+    environment:
+      TZ: Europe/London
+      EDGE_KEY: ${PORTABASE_AGENT_EDGEKEY_VOLUME}
+    volumes:
+      - docker-sqllite-data:/sqllite-volumes/dockhand-sqllite-data
+    networks:
+      infra-net-portabase:
+#######
 
 volumes:
-  portabase-data:
+  dockhand-sqllite-data:
+    name: dockhand_dockhand_data
+    external: true
 
 networks:
   infra-net-postgres:
