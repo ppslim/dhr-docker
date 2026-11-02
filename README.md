@@ -14,11 +14,12 @@ Stacks carry one of two prefixes
 * `infra-mariadb` - Shared MariaDB instance + SOCAT proxy. Provides databases
   * `nginxproxy` NGINX Proxy Manager
   * `firefly` Firely III
-* infra-postgres - Shared Postgres 15 & 17 instances + SOCAT proxies for each
+* `infra-postgres` - Shared Postgres 15 & 17 instances + SOCAT proxies for each
   * Postgres 15 Databases
     * `ghostfolio` Ghostfolio
   * Postgres 17 Databases
     * `portabase` Portabase manager
+* `infra-openldap` - Shared OpenLDAP instance
 * `infra-backup-portabase` - Portabase Manager instance
 * `infra-backup-portabase-agent` - Portabase Agents used for shared or exclusive DB backups
 
@@ -52,12 +53,16 @@ The following networks are defined with the following config
   * Manually defined: TRUE
   * Extra info: None
 
-
 * `infra-net-postgres`
   * Description: Used for application to Postgres 15/17 server ICC
   * Internal: TRUE
   * Manually defined: TRUE
   * Extra info: None
+
+* `infra-net-ldap`
+  * Description: Used for application to OpenLDAP server ICC
+  * Internal: TRUE
+  * Manually defined: FALSE (stack defines it)
 
 * `infra-net-portabase`
   * Description: Used for Portabase inter agent ICC

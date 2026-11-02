@@ -1,0 +1,37 @@
+services:
+  openldap:
+    image: bitnamilegacy/openldap:latest
+    environment:
+      - LDAP_ROOT=${OPENLDAP_ROOT}
+      - LDAP_SKIP_DEFAULT_TREE=yes
+      - LDAP_CONFIG_ADMIN_ENABLED=yes
+      - LDAP_ADMIN_USERNAME=${OPENLDAP_ADMIN_USERNAME}
+      - LDAP_ADMIN_PASSWORD_FILE=/run/secrets/openldap-admin-password
+      - LDAP_CONFIG_ADMIN_PASSWORD_FILE=/run/secrets/ldap-config-password
+      - LDAP_PASSWORD_HASH={SSHA512}
+    secrets:
+      - openldap-admin-password
+      - openldap-config-password
+    networks:
+      infra-net-ldap:
+      infra-net-nginxproxy:
+        aliases:
+          - infra-openldap-ldap
+    volumes:
+      - openldap-data:/bitnami/openldap
+#######
+volumes:
+  openldap-data: null
+
+networks:
+  infra-net-ldap:
+    name: infra-net-ldap
+    internal: true
+  infra-net-nginxproxy:
+    external: true
+  
+secrets:
+  openldap-admin-password:
+    environment: OPENLDAP_ADMIN_PASSWORD
+  openldap-config-password:
+    environment: OPENLDAP_CONFIG_PASSWORD

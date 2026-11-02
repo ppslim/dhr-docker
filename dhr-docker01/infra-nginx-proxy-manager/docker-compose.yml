@@ -6,6 +6,8 @@ services:
       - '80:80'
       - '443:443'
       - '81:81'
+## Used by OpenLDAP
+      - '636:636'
     environment:
       TZ: ${NGINX_PROXY_TZ}
       DB_MYSQL_HOST: ${DATABASE_HOST}
