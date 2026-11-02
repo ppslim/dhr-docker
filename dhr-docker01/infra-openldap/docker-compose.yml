@@ -7,7 +7,7 @@ services:
       - LDAP_CONFIG_ADMIN_ENABLED=yes
       - LDAP_ADMIN_USERNAME=${OPENLDAP_ADMIN_USERNAME}
       - LDAP_ADMIN_PASSWORD_FILE=/run/secrets/openldap-admin-password
-      - LDAP_CONFIG_ADMIN_PASSWORD_FILE=/run/secrets/ldap-config-password
+      - LDAP_CONFIG_ADMIN_PASSWORD_FILE=/run/secrets/openldap-config-password
       - LDAP_PASSWORD_HASH={SSHA512}
     secrets:
       - openldap-admin-password
