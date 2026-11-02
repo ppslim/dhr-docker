@@ -17,6 +17,9 @@ services:
       infra-net-nginxproxy:
         aliases:
           - infra-openldap-ldap
+      infra-net-shared:  ## Required for ingress/egress
+    ports:
+      - "1389:1389"
     volumes:
       - openldap-data:/bitnami/openldap
 #######
@@ -28,6 +31,8 @@ networks:
     name: infra-net-ldap
     internal: true
   infra-net-nginxproxy:
+    external: true
+  infra-net-shared:
     external: true
   
 secrets:
