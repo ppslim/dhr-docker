@@ -23,7 +23,7 @@ services:
       infra-net-portabase:
         aliases:
           - infra-backup-portabase
-    labekls:
+    labels:
       - "dockhand.url=[Portabase Manager](https://portabase.int.richtech.uk)"
 
 volumes:
